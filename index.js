@@ -29,7 +29,7 @@ const DATA_DIR = process.env.RENDER_SERVICE_ID
   : __dirname;
 const FILE_PATH = path.join(DATA_DIR, "visits.json");
 
-]
+
 const publicPath = path.join(__dirname, "public");
 if (fs.existsSync(publicPath)) {
   app.use(express.static(publicPath));
