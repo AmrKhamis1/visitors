@@ -15,7 +15,7 @@ const corsOptions = {
           "https://amrkhamis1.github.io",
           "https://yourdomain.com",
           "https://www.yourdomain.com",
-        ] 
+        ]
       : true, // allow all origins
   credentials: true,
 };
@@ -23,12 +23,10 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json({ limit: "10mb" }));
 
-
 const DATA_DIR = process.env.RENDER_SERVICE_ID
   ? "/opt/render/project/src"
   : __dirname;
 const FILE_PATH = path.join(DATA_DIR, "visits.json");
-
 
 const publicPath = path.join(__dirname, "public");
 if (fs.existsSync(publicPath)) {
@@ -99,7 +97,6 @@ function writeVisitsData(data) {
   }
 }
 
-
 app.get("/health", (req, res) => {
   res.json({
     status: "healthy",
@@ -163,6 +160,11 @@ app.get("/visit-count", (req, res) => {
   }
 });
 
+app.get("/get-json", (req, res) => {
+  const data = fs.readFileSync("./visits.json", "utf8");
+  res.type("application/json").send(data);
+});
+
 // Handle 404
 app.use("*", (req, res) => {
   res.status(404).json({ error: "Route not found" });
@@ -173,7 +175,6 @@ app.use((err, req, res, next) => {
   console.error("Unhandled error:", err);
   res.status(500).json({ error: "Internal server error" });
 });
-
 
 app.listen(PORT, "0.0.0.0", () => {
   console.log(`✅ Visit tracker running on port ${PORT}`);
